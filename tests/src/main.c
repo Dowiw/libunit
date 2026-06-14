@@ -1,5 +1,17 @@
 #include "tests.h"
 
+int my_setup(void)
+{
+    ft_putstr(C_MAGENTA"      (Running Setup Hook)\n"C_RESET);
+    return (0);
+}
+
+int my_teardown(void)
+{
+    ft_putstr(C_MAGENTA"      (Running Teardown Hook)\n"C_RESET);
+    return (0);
+}
+
 int main(void)
 {
     t_test_suite *suites = NULL;
@@ -7,6 +19,8 @@ int main(void)
     t_test_suite *s2;
 
     s1 = load_suite(&suites, "Standard Tests");
+    s1->setup = my_setup;
+    s1->teardown = my_teardown;
     load_test(s1, "Basic OK Test", &test_00_ok);
     load_test(s1, "Basic Fail Test", &test_01_fail);
     load_test(s1, "Capture Stdout Test", &test_05_capture);

@@ -10,6 +10,8 @@ t_test_suite *load_suite(t_test_suite **suites, char *name)
         return (NULL);
     new->name = name;
     new->tests = NULL;
+    new->setup = NULL;
+    new->teardown = NULL;
     new->next = NULL;
 
     if (!*suites)

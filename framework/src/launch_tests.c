@@ -94,6 +94,16 @@ int     launch_tests(t_test_suite **suites)
         ft_putstr(s_tmp->name);
         ft_putstr("]\n");
 
+        if (s_tmp->setup)
+        {
+            if (s_tmp->setup() == -1)
+            {
+                ft_putstr(C_RED"    > Setup Failed! Skipping suite.\n"C_RESET);
+                s_tmp = s_tmp->next;
+                continue;
+            }
+        }
+
         t_tmp = s_tmp->tests;
         while (t_tmp)
         {
@@ -102,6 +112,10 @@ int     launch_tests(t_test_suite **suites)
             total++;
             t_tmp = t_tmp->next;
         }
+
+        if (s_tmp->teardown)
+            s_tmp->teardown();
+
         s_tmp = s_tmp->next;
     }
     ft_putstr("\n");

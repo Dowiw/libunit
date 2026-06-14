@@ -27,6 +27,8 @@ typedef struct s_test_suite
 {
     char                *name;
     t_unit_test         *tests;
+    int                 (*setup)(void);
+    int                 (*teardown)(void);
     struct s_test_suite *next;
 }   t_test_suite;
 
