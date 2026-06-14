@@ -21,9 +21,27 @@ This project implements a test runner that allows you to register test functions
 ## Quick Start
 
 ### Compiling and Running
-To compile both the framework and run the test suite:
+To compile both the framework and run the included test suite:
 ```bash
 make test
+```
+
+### Using Libunit in Your Own Project
+If you want to link `libunit.a` to your own project outside of the provided `tests/` directory, you only need the `framework/` folder.
+
+1. Build the library:
+```bash
+make -C framework
+```
+
+2. Compile your own tests and link against the library:
+```bash
+cc -Wall -Wextra -Werror your_test_file.c -I framework/inc -L framework -lunit -o my_tests
+```
+
+3. Run your executable:
+```bash
+./my_tests
 ```
 
 ## How to Write Your Own Tests
