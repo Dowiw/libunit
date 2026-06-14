@@ -1,6 +1,6 @@
 #include "libunit.h"
 
-static void    free_list(t_unit_test **list)
+static void    free_tests(t_unit_test **list)
 {
     t_unit_test *tmp;
 
@@ -8,6 +8,19 @@ static void    free_list(t_unit_test **list)
     {
         tmp = *list;
         *list = (*list)->next;
+        free(tmp);
+    }
+}
+
+static void    free_suites(t_test_suite **suites)
+{
+    t_test_suite *tmp;
+
+    while (*suites)
+    {
+        tmp = *suites;
+        free_tests(&tmp->tests);
+        *suites = (*suites)->next;
         free(tmp);
     }
 }
@@ -61,22 +74,35 @@ static int  run_test(t_unit_test *test)
     return (status);
 }
 
-int     launch_tests(t_unit_test **list)
+int     launch_tests(t_test_suite **suites)
 {
-    t_unit_test *tmp;
+    t_test_suite *s_tmp;
+    t_unit_test  *t_tmp;
     int         total;
     int         success;
     int         status;
 
-    tmp = *list;
+    s_tmp = *suites;
     total = 0;
     success = 0;
-    while (tmp)
+    ft_putstr("*********************************\n");
+    ft_putstr("          LIBUNIT TESTS          \n");
+    ft_putstr("*********************************\n");
+    while (s_tmp)
     {
-        status = run_test(tmp);
-        print_status(status, &success);
-        total++;
-        tmp = tmp->next;
+        ft_putstr("\n[");
+        ft_putstr(s_tmp->name);
+        ft_putstr("]\n");
+
+        t_tmp = s_tmp->tests;
+        while (t_tmp)
+        {
+            status = run_test(t_tmp);
+            print_status(status, &success);
+            total++;
+            t_tmp = t_tmp->next;
+        }
+        s_tmp = s_tmp->next;
     }
     ft_putstr("\n");
     ft_putnbr(success);
@@ -84,9 +110,9 @@ int     launch_tests(t_unit_test **list)
     ft_putnbr(total);
     ft_putstr(" tests passed\n\n");
     
-    free_list(list);
+    free_suites(suites);
     
-    if (success == total)
+    if (total > 0 && success == total)
         return (0);
     return (-1);
 }

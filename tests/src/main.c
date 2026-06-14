@@ -2,20 +2,19 @@
 
 int main(void)
 {
-    t_unit_test *testlist;
+    t_test_suite *suites = NULL;
+    t_test_suite *s1;
+    t_test_suite *s2;
 
-    testlist = NULL;
+    s1 = load_suite(&suites, "Standard Tests");
+    load_test(s1, "Basic OK Test", &test_00_ok);
+    load_test(s1, "Basic Fail Test", &test_01_fail);
+    load_test(s1, "Capture Stdout Test", &test_05_capture);
 
-    ft_putstr("*********************************\n");
-    ft_putstr("          LIBUNIT TESTS          \n");
-    ft_putstr("*********************************\n");
+    s2 = load_suite(&suites, "Crash Tests");
+    load_test(s2, "Segmentation Fault Test", &test_02_segv);
+    load_test(s2, "Bus Error Test", &test_03_bus);
+    load_test(s2, "Timeout Test", &test_04_timeout);
 
-    load_test(&testlist, "Basic OK Test", &test_00_ok);
-    load_test(&testlist, "Basic Fail Test", &test_01_fail);
-    load_test(&testlist, "Segmentation Fault Test", &test_02_segv);
-    load_test(&testlist, "Bus Error Test", &test_03_bus);
-    load_test(&testlist, "Timeout Test", &test_04_timeout);
-    load_test(&testlist, "Capture Stdout Test", &test_05_capture);
-
-    return (launch_tests(&testlist));
+    return (launch_tests(&suites));
 }

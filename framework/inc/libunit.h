@@ -23,8 +23,16 @@ typedef struct s_unit_test
     struct s_unit_test  *next;
 }   t_unit_test;
 
-void    load_test(t_unit_test **list, char *name, int (*f)(void));
-int     launch_tests(t_unit_test **list);
+typedef struct s_test_suite
+{
+    char                *name;
+    t_unit_test         *tests;
+    struct s_test_suite *next;
+}   t_test_suite;
+
+t_test_suite *load_suite(t_test_suite **suites, char *name);
+void    load_test(t_test_suite *suite, char *name, int (*f)(void));
+int     launch_tests(t_test_suite **suites);
 
 void    ft_putstr(char *s);
 void    ft_putnbr(int n);
