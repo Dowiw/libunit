@@ -2,73 +2,88 @@
 
 A lightweight, 42-compliant unit testing framework built in C from scratch.
 
-This project implements a test runner that allows you to register test functions dynamically using a linked list. By executing each test inside a forked process (`fork()`), the framework safely catches and reports execution crashes (such as Segmentation Faults and Bus Errors) or infinite loops without bringing down the main test suite.
+This project implements a test runner that allows you to register test functions dynamically into Test Suites. By executing each test inside a forked process (`fork()`), the framework safely catches and reports execution crashes (such as Segmentation Faults and Bus Errors) or infinite loops without bringing down the main test suite.
 
 ## Features
 - **Crash Resistance:** Tests run in isolated child processes.
 - **Signal Handling:** Specifically detects and reports `[SIGSEGV]`, `[SIGBUS]`, and timeouts.
 - **Timeout Protection:** Infinite loops are caught using `alarm(3)`.
-- **42 Norm Compliant:** Uses custom functions (`ft_putstr`, `ft_putnbr`) instead of standard library calls like `printf`.
-- **Colored Output:** Easy-to-read success, failure, and crash indicators.
+- **42 Norm Compliant:** Uses custom functions instead of standard library calls like `printf`.
+- **Assertion Macros:** Clean testing syntax using `UNIT_ASSERT_EQ` and others.
+- **Stdout Capturing:** Test functions that print to standard output using `capture_stdout_start()`.
+- **Test Suites:** Group tests logically under categorized headers.
+- **Setup & Teardown Hooks:** Automatically run initialization and cleanup code around your test suites.
 
 ## Directory Structure
-- **`framework/`**: Contains the core logic for the unit testing framework.
-  - `load_test.c`: Registers tests into the `t_unit_test` linked list.
-  - `launch_tests.c`: Executes the tests and reports results.
-  - `libunit_utils.c`: Basic I/O functions.
+- **`framework/`**: Contains the core logic for the unit testing framework (`libunit.a`).
 - **`tests/`**: Contains the test cases and the main test runner program.
 
 ## Quick Start
 
-### Compiling
-To compile both the framework and the test suite:
-```bash
-make
-```
-
-### Running Tests
-To compile and automatically execute the tests:
+### Compiling and Running
+To compile both the framework and run the test suite:
 ```bash
 make test
 ```
 
 ## How to Write Your Own Tests
 
-1. **Create a Test Function:**
-Create a function that returns `0` on success and `-1` on failure.
+### 1. Create a Test Function
+Use the provided assertion macros to make your life easier. Tests should return `0` on success and `-1` on failure (handled automatically by the macros).
+
 ```c
-/* tests/src/my_custom_test.c */
+/* tests/src/test_strlen.c */
 #include "tests.h"
 
-int my_custom_test(void)
+int test_strlen_basic(void)
 {
-    int result = my_function_to_test();
-    if (result == EXPECTED_VALUE)
-        return (0); // Pass
-    return (-1);    // Fail
+    UNIT_ASSERT_EQ(ft_strlen("hello"), 5);
+    return (0);
 }
 ```
 
-2. **Add Prototype:**
-Add the function prototype to `tests/inc/tests.h`.
-
-3. **Register Test in Main:**
-Load the test in your `tests/src/main.c` file using `load_test()`.
+### 2. Output Capturing
+If your function writes to `stdout`, you can capture it:
 ```c
+int test_putstr(void)
+{
+    char *out;
+    
+    capture_stdout_start();
+    ft_putstr("Hello World");
+    out = capture_stdout_end();
+
+    UNIT_ASSERT_EQ(ft_strcmp(out, "Hello World"), 0);
+    free(out);
+    return (0);
+}
+```
+
+### 3. Registering Tests and Suites
+Load your tests into categorized suites in `tests/src/main.c`. You can optionally add `setup` and `teardown` hooks to any suite.
+
+```c
+int init_mock_data(void) {
+    // Allocation logic here
+    return (0); // 0 means success
+}
+
 int main(void)
 {
-    t_unit_test *testlist = NULL;
+    t_test_suite *suites = NULL;
+    t_test_suite *s_string;
 
-    load_test(&testlist, "My Custom Test", &my_custom_test);
+    // Create a new suite
+    s_string = load_suite(&suites, "String Functions");
     
-    // ... add more tests
+    // Optional: Add setup/teardown hooks
+    s_string->setup = init_mock_data; 
+    
+    // Register tests to the suite
+    load_test(s_string, "Strlen Basic", &test_strlen_basic);
+    load_test(s_string, "Putstr Capturing", &test_putstr);
 
-    return (launch_tests(&testlist));
+    // Launch all suites
+    return (launch_tests(&suites));
 }
 ```
-
-4. **Update Makefile:**
-Add your new `.c` file to the `SRCS` variable in `tests/Makefile`.
-
-5. **Run!**
-Run `make test` to see your results!
