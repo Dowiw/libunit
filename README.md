@@ -44,6 +44,13 @@ cc -Wall -Wextra -Werror your_test_file.c -I framework/inc -L framework -lunit -
 ./my_tests
 ```
 
+### Changing the Tests Directory
+By default, running `make test` from the root directory executes the Makefile inside `tests/`. If you want to use a differently named directory for your tests (e.g. `my_tests`), you can specify it via the `TEST_DIR` variable:
+
+```bash
+make test TEST_DIR=my_tests
+```
+
 ## How to Write Your Own Tests
 
 ### 1. Create a Test Function

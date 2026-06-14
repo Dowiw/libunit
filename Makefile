@@ -1,17 +1,19 @@
+TEST_DIR ?= tests
+
 all:
 	$(MAKE) -C framework
-	$(MAKE) -C tests
+	$(MAKE) -C $(TEST_DIR)
 
 test:
-	$(MAKE) -C tests test
+	$(MAKE) -C $(TEST_DIR) test
 
 clean:
 	$(MAKE) -C framework clean
-	$(MAKE) -C tests clean
+	$(MAKE) -C $(TEST_DIR) clean
 
 fclean:
 	$(MAKE) -C framework fclean
-	$(MAKE) -C tests fclean
+	$(MAKE) -C $(TEST_DIR) fclean
 
 re: fclean all
 
