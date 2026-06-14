@@ -1,0 +1,15 @@
+# Object files
+*.o
+obj/
+
+# Compiled archives and executables
+*.a
+test_bin
+
+# OS specific files
+.DS_Store
+
+# Editor temporary files
+*~
+\#*\#
+.*.swp
