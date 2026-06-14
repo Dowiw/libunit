@@ -8,6 +8,7 @@ OBJ_DIR = obj
 SRCS =	$(SRC_DIR)/libunit_utils.c \
 		$(SRC_DIR)/load_test.c \
 		$(SRC_DIR)/launch_tests.c \
+		$(SRC_DIR)/libunit_assert.c \
 		$(SRC_DIR)/libunit_capture.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
