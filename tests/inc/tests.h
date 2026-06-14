@@ -8,5 +8,6 @@ int test_01_fail(void);
 int test_02_segv(void);
 int test_03_bus(void);
 int test_04_timeout(void);
+int test_05_capture(void);
 
 #endif

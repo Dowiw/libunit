@@ -29,4 +29,7 @@ int     launch_tests(t_unit_test **list);
 void    ft_putstr(char *s);
 void    ft_putnbr(int n);
 
+void    capture_stdout_start(void);
+char    *capture_stdout_end(void);
+
 #endif

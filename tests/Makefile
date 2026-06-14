@@ -10,7 +10,8 @@ SRCS =	$(SRC_DIR)/main.c \
 		$(SRC_DIR)/test_01_fail.c \
 		$(SRC_DIR)/test_02_segv.c \
 		$(SRC_DIR)/test_03_bus.c \
-		$(SRC_DIR)/test_04_timeout.c
+		$(SRC_DIR)/test_04_timeout.c \
+		$(SRC_DIR)/test_05_capture.c
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

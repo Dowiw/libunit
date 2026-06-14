@@ -15,6 +15,7 @@ int main(void)
     load_test(&testlist, "Segmentation Fault Test", &test_02_segv);
     load_test(&testlist, "Bus Error Test", &test_03_bus);
     load_test(&testlist, "Timeout Test", &test_04_timeout);
+    load_test(&testlist, "Capture Stdout Test", &test_05_capture);
 
     return (launch_tests(&testlist));
 }
