@@ -2,5 +2,6 @@
 
 int test_01_fail(void)
 {
-    return (-1);
+    UNIT_ASSERT_EQ(42, 0);
+    return (0);
 }

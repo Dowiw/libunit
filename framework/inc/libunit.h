@@ -14,6 +14,8 @@
 # define C_CYAN    "\x1B[36m"
 # define C_RESET   "\x1B[0m"
 
+# include "libunit_assert.h"
+
 typedef struct s_unit_test
 {
     char                *name;
