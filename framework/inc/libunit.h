@@ -1,10 +1,8 @@
 #ifndef LIBUNIT_H
 # define LIBUNIT_H
 
-# include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
-# include <signal.h>
 
 # define C_RED     "\x1B[31m"
 # define C_GREEN   "\x1B[32m"
@@ -13,8 +11,6 @@
 # define C_MAGENTA "\x1B[35m"
 # define C_CYAN    "\x1B[36m"
 # define C_RESET   "\x1B[0m"
-
-# include "libunit_assert.h"
 
 typedef struct s_unit_test
 {
