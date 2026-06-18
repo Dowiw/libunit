@@ -1,6 +1,6 @@
-#include "libunit.h"
+#include <unistd.h>
 
-void ft_putstr_fd(char *s, int fd)
+static void ft_putstr_fd(char *s, int fd)
 {
     int i = 0;
     while (s && s[i])
@@ -9,7 +9,7 @@ void ft_putstr_fd(char *s, int fd)
         write(fd, s, i);
 }
 
-void ft_putnbr_fd(int n, int fd)
+static void ft_putnbr_fd(int n, int fd)
 {
     long ln = n;
     char c;
