@@ -1,4 +1,5 @@
 #include "libunit.h"
+#include <stdlib.h>
 
 static int g_capture_fd[2];
 static int g_saved_stdout;

@@ -1,4 +1,5 @@
 #include "libunit.h"
+#include <stdlib.h>
 
 t_test_suite *load_suite(t_test_suite **suites, char *name)
 {

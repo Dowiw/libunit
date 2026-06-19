@@ -1,4 +1,5 @@
 #include "libunit.h"
+#include <stdlib.h>
 
 static void    free_tests(t_unit_test **list)
 {
